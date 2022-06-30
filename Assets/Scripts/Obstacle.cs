@@ -6,7 +6,9 @@ public class Obstacle : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
+            var player = collision.gameObject.GetComponent<PlayerController>();
+            player.Rb2D.velocity = Vector3.zero;
         }
     }
 }

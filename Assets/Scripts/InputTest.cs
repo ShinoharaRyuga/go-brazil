@@ -50,6 +50,11 @@ public class InputTest : MonoBehaviour
     {
         _buttonDebugText.text = "ボタンが押された";
     }
+
+    public void ResetButton()
+    {
+        _buttonDebugText.text = "リセット";
+    }
 }
 
 
