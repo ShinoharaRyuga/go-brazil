@@ -5,12 +5,13 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] PlayerController _playerController = default;
-    [SerializeField] Transform _startPoint = default;
-    [SerializeField] WallController _wall = default;
-    [SerializeField] Button _startButton = default;
-    [SerializeField] TMP_Dropdown _speedDropdown = default;
-    [SerializeField] float[] _rotateSpeeds = new float[5];
+    [SerializeField, Tooltip("スタート位置")] Transform _startPoint = default;
+    [SerializeField, Tooltip("プレイヤーが操作する壁")] WallController _wall = default;
+    [SerializeField, Tooltip("ゲーム開始ボタン")] Button _startButton = default;
+    [SerializeField, Tooltip("壁の回転速度を変える為のドロップダウン")] TMP_Dropdown _speedDropdown = default;
+    [SerializeField, Tooltip("ドロップダウン事の壁回転速度")] float[] _rotateSpeeds = new float[5];
 
+    /// <summary>もう一度遊べるようにする </summary>
     public void Restart()
     {
         _playerController.gameObject.SetActive(true);
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
         _playerController.Rb2D.velocity = Vector3.zero;
     }
 
+    /// <summary>壁の回転速度を変える </summary>
     public void ChangeRotateSpeed()
     {
         var value = _speedDropdown.value;
@@ -43,4 +45,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+
 }
