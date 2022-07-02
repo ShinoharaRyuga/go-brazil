@@ -67,45 +67,45 @@ public class WallController : MonoBehaviour
             }
         }
 
-        foreach (var touch in Input.touches)    //フリック入力
-        {
-            if (touch.phase == TouchPhase.Began)
-            {
-                _startPoint = new Vector3(touch.position.x, touch.position.y, 10);
-                _isflickTimer = true;
-            }
+        //foreach (var touch in Input.touches)    //フリック入力
+        //{
+        //    if (touch.phase == TouchPhase.Began)
+        //    {
+        //        _startPoint = new Vector3(touch.position.x, touch.position.y, 10);
+        //        _isflickTimer = true;
+        //    }
 
-            if (touch.phase == TouchPhase.Ended)
-            {
-                _endPoint = new Vector3(touch.position.x, touch.position.y, 10);
-                GetFlickDistance();
+        //    if (touch.phase == TouchPhase.Ended)
+        //    {
+        //        _endPoint = new Vector3(touch.position.x, touch.position.y, 10);
+        //        GetFlickDistance();
             
-                //フリック入力が出来ているかどうかの判定
-                if (_minInputFlickDirection <= _flickDirectionX && _flickDirectionX <= _maxInputFlickDirection      //X軸のフリック
-                    || _minInputFlickDirection <= _flickDirectionY && _flickDirectionY <= _maxInputFlickDirection   //Y軸のフリック
-                    && _flickTime <= _activateFlickTime)   //フリックが発動するかどうか
-                {
-                    _flickRotateValue += 90;
-                     transform.Rotate(0, 0, _flickRotateValue);
+        //        //フリック入力が出来ているかどうかの判定
+        //        if (_minInputFlickDirection <= _flickDirectionX && _flickDirectionX <= _maxInputFlickDirection      //X軸のフリック
+        //            || _minInputFlickDirection <= _flickDirectionY && _flickDirectionY <= _maxInputFlickDirection   //Y軸のフリック
+        //            && _flickTime <= _activateFlickTime)   //フリックが発動するかどうか
+        //        {
+        //            _flickRotateValue += 90;
+        //             transform.Rotate(0, 0, _flickRotateValue);
 
-                    if (360 <= _flickRotateValue)
-                    {
-                        _flickRotateValue = 0;
-                    }
+        //            if (360 <= _flickRotateValue)
+        //            {
+        //                _flickRotateValue = 0;
+        //            }
 
-                    _flickTime = 0f;
-                    _isflickTimer = false;
-                }
+        //            _flickTime = 0f;
+        //            _isflickTimer = false;
+        //        }
                
-                _startPoint = Vector3.zero;
-                _endPoint = Vector3.zero;
-            }
-        }
+        //        _startPoint = Vector3.zero;
+        //        _endPoint = Vector3.zero;
+        //    }
+        //}
 
-        if (_isflickTimer)
-        {
-            _flickTime += Time.deltaTime;
-        }
+        //if (_isflickTimer)
+        //{
+        //    _flickTime += Time.deltaTime;
+        //}
     }
 
     /// <summary>_rotateDirectionによって回転方向を変える</summary>

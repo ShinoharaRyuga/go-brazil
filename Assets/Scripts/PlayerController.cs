@@ -6,6 +6,17 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D _rb2D = default;
 
     public Rigidbody2D Rb2D { get => _rb2D; set => _rb2D = value; }
+    public float Speed 
+    {
+        get => _speed;
+        set
+        {
+            if (0 < value)
+            {
+                _speed = value;
+            }
+        }
+    }
 
     private void Start()
     {
