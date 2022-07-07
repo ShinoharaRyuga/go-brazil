@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ƒQ[ƒ€‚ğŠÇ—‚·‚é
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     [SerializeField] PlayerController _playerController = default;

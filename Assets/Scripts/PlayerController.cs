@@ -1,11 +1,14 @@
 using UnityEngine;
 
+/// <summary>プレイヤーの落下速度を変更する </summary>
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float _speed = 1f;
+    [SerializeField, Tooltip("落下速度")] float _speed = 1f;
     Rigidbody2D _rb2D = default;
 
     public Rigidbody2D Rb2D { get => _rb2D; set => _rb2D = value; }
+
+    /// <summary>落下速度 </summary>
     public float Speed 
     {
         get => _speed;

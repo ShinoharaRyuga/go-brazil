@@ -40,7 +40,7 @@ public class WallController : MonoBehaviour
     void Update()
     {
         var h = Input.GetAxisRaw("Horizontal");
-
+      
         if (h == 1)
         {
             ChangeMoveDirection(true);

@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>マップの状態を管理するクラス </summary>
 public class MapTip : MonoBehaviour
 {
-   
+    /// <summary>チップの状態 </summary>
     Status _status = Status.Road;
+    /// <summary>状態によって色を変更する為のレンダラー </summary>
     SpriteRenderer _spriteRenderer => GetComponent<SpriteRenderer>();
     public Status Status 
     {
@@ -17,16 +17,7 @@ public class MapTip : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-    
+    /// <summary>状態によって色を変更 </summary>
     void ChangeColor()
     {
         switch (_status)
@@ -41,6 +32,7 @@ public class MapTip : MonoBehaviour
     }
 }
 
+/// <summary>tipの状態 </summary>
 public enum Status
 {
     Wall,

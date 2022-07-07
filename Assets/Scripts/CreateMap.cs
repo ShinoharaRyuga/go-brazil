@@ -7,12 +7,15 @@ public class CreateMap : MonoBehaviour
     [SerializeField, Min(7), Tooltip("横の長さ")] int _columns = 7;
     [SerializeField, Tooltip("マップを形成するオブジェクト")] MapTip _mapTip = default;
     [SerializeField, Tooltip("生成されたマップの親オブジェクト")] Transform _mapParent = default;
+    [SerializeField, Tooltip("マップ回転の中心")]Transform _mapRotationCenter = default;
     /// <summary>生成されたマップのデータ </summary>
     MapTip[,] _mapData = default;
 
     void Start()
     {
         _mapData = new MapTip[_rows, _columns];
+        _mapRotationCenter.position = new Vector2(_rows / 2, _columns / 2);
+        _mapRotationCenter.gameObject.name = "MapRotationCenter";
         MapCreator();
     }
 
@@ -49,6 +52,7 @@ public class CreateMap : MonoBehaviour
             { 
                 _mapData[r, c].Status = Status.Wall;
 
+                //最初に取得したtipの状態が壁だったらやり直す
                 do
                 {
                     if (isLast)
@@ -67,6 +71,8 @@ public class CreateMap : MonoBehaviour
                 getdata.Status = Status.Wall;
             }
         }
+
+        _mapParent.SetParent(_mapRotationCenter);
     }
 
     /// <summary>決められた方向のMapTipを配列から取得し値を返す </summary>
