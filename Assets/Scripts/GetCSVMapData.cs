@@ -2,15 +2,21 @@ using System;
 using System.IO;
 using UnityEngine;
 
+/// <summary>csvファイルからマップデータを読み込む </summary>
 public class GetCSVMapData : MonoBehaviour
 {
-    [SerializeField] TextAsset _csvMapData = default;
+    [SerializeField, Tooltip("マップデータのcsvファイル")] TextAsset _csvMapData = default;
     int _rows = 0;
     int _columns = 0;
 
     public int Rows { get => _rows; }
     public int Columns { get => _columns; }
 
+    /// <summary>
+    /// csvファイルからデータを取得し
+    /// 取得したデータをint型の二次元配列にして返す 
+    /// </summary>
+    /// <returns>マップデータ</returns>
     public int[,] GetData()
     {
         var sr = new StringReader(_csvMapData.text);
@@ -40,7 +46,6 @@ public class GetCSVMapData : MonoBehaviour
             currentRow++;
         }
 
-        Debug.Log("end");
         return data;
     }
 }
