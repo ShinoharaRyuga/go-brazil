@@ -8,7 +8,7 @@ public class CreateMap : MonoBehaviour
     [SerializeField, Min(7), Tooltip("横の長さ")] int _columns = 7;
     [SerializeField, Tooltip("マップを形成するオブジェクト")] MapTip _mapTip = default;
     [SerializeField, Tooltip("生成されたマップの親オブジェクト")] Transform _mapParent = default;
-    [SerializeField, Tooltip("マップ回転の中心")]Transform _mapRotationCenter = default;
+    [SerializeField, Tooltip("マップ回転の中心")] Transform _mapRotationCenter = default;
     [SerializeField, Tooltip("読み込んだマップデータを取得する")] GetCSVMapData _getCSVMapData = default;
     /// <summary>生成されたマップのデータ </summary>
     MapTip[,] _mapData = default;
@@ -36,7 +36,6 @@ public class CreateMap : MonoBehaviour
         {
             for (var c = 0; c < _columns; c++)
             {
-
                 var tip = MapTipGenerator(r, c);
 
                 if (r == 0 || r == _rows - 1 || c == 0 || c == _columns - 1)
@@ -45,6 +44,8 @@ public class CreateMap : MonoBehaviour
                 }
             }
         }
+
+        SetExit();
 
         for (var r = 2; r < _rows - 1; r += 2)      //壁にする位置を取得し壁にする
         {
@@ -58,7 +59,7 @@ public class CreateMap : MonoBehaviour
             }
 
             for (var c = 2; c < _columns - 1; c += 2)
-            { 
+            {
                 _mapData[r, c].Status = Status.Wall;
 
                 //最初に取得したtipの状態が壁だったらやり直す
@@ -107,6 +108,20 @@ public class CreateMap : MonoBehaviour
         }
     }
 
+    /// <summary>4方向に出入口を作成する</summary>
+    void SetExit()
+    {
+        var upExit = Random.Range(1, _rows);
+        var downExit = Random.Range(1, _rows);
+        var leftExit = Random.Range(1, _columns);
+        var rightExit = Random.Range(1, _columns - 1);
+
+        _mapData[0, upExit].Status = Status.Road;
+        _mapData[_rows - 1, downExit].Status = Status.Road;
+        _mapData[leftExit, 0].Status = Status.Road;
+        _mapData[rightExit, _columns - 1].Status = Status.Road;
+    }
+
     /// <summary>決められた方向のMapTipを配列から取得し値を返す </summary>
     /// <param name="direction">取得する方向</param>
     MapTip GetMapTip(Direction direction, int r, int c)
@@ -152,7 +167,7 @@ public enum Direction
 
 /// <summary>マップの生成方法 </summary>
 public enum CreateMode
-{ 
+{
     Ramdom = 0,
     /// <summary>CSVファイルなどからマップデータを読み込む </summary>
     MapData = 1,
