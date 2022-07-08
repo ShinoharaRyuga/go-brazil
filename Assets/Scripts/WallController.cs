@@ -116,22 +116,22 @@ public class WallController : MonoBehaviour
         {
             if (InputDirection)
             {
-                transform.Rotate(0, 0, _rotateSpeed);
+                transform.Rotate(0, 0, -_rotateSpeed);
             }
             else
             {
-                transform.Rotate(0, 0, -_rotateSpeed);
+                transform.Rotate(0, 0, _rotateSpeed);
             }
         }
         else if (_rotateDirection == RotateDirection.Reverse)
         {
             if (InputDirection)
             {
-                transform.Rotate(0, 0, -_rotateSpeed);
+                transform.Rotate(0, 0, _rotateSpeed);
             }
             else
-            {
-                transform.Rotate(0, 0, _rotateSpeed);
+            {   
+                transform.Rotate(0, 0, -_rotateSpeed);
             }
         }
     } 
