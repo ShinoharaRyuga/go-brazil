@@ -10,13 +10,16 @@ public class CreateMap : MonoBehaviour
     [SerializeField, Tooltip("生成されたマップの親オブジェクト")] Transform _mapParent = default;
     [SerializeField, Tooltip("マップ回転の中心")] Transform _mapRotationCenter = default;
     [SerializeField, Tooltip("読み込んだマップデータを取得する")] GetCSVMapData _getCSVMapData = default;
+    [SerializeField, Tooltip("ステージ全体が映るようにする為")] CameraController _cameraController = default;
+    [SerializeField] PlayerController _player = default;
+    [SerializeField] GameManager _gameManager = default;
     /// <summary>生成されたマップのデータ </summary>
     MapTip[,] _mapData = default;
-
+  
     void Start()
     {
         _mapData = new MapTip[_rows, _columns];
-        _mapRotationCenter.position = new Vector2(_rows / 2, _columns / 2);
+        _mapRotationCenter.position = new Vector2(_rows * 4 / 2, _columns * 4 / 2);
         _mapRotationCenter.gameObject.name = "MapRotationCenter";
 
         if (_createMode == CreateMode.Ramdom)
@@ -27,6 +30,8 @@ public class CreateMap : MonoBehaviour
         {
             DataCreateMap();
         }
+
+        _gameManager.CreateMap += MapCreator;
     }
 
     /// <summary>マップをランダム生成する </summary>
@@ -37,7 +42,7 @@ public class CreateMap : MonoBehaviour
             for (var c = 0; c < _columns; c++)
             {
                 var tip = MapTipGenerator(r, c);
-
+                
                 if (r == 0 || r == _rows - 1 || c == 0 || c == _columns - 1)
                 {
                     tip.Status = Status.Wall;
@@ -82,7 +87,7 @@ public class CreateMap : MonoBehaviour
             }
         }
 
-        _mapParent.SetParent(_mapRotationCenter);
+        _mapParent.transform.SetParent(_mapRotationCenter);
     }
 
     /// <summary>CSVから取得したマップデータを使用してマップを作成する </summary>
@@ -106,6 +111,8 @@ public class CreateMap : MonoBehaviour
                 }
             }
         }
+
+        //_cameraController.SetCameraTargets(GetCameraTargets());
     }
 
     /// <summary>4方向に出入口を作成する</summary>
@@ -120,6 +127,20 @@ public class CreateMap : MonoBehaviour
         _mapData[_rows - 1, downExit].Status = Status.Road;
         _mapData[leftExit, 0].Status = Status.Road;
         _mapData[rightExit, _columns - 1].Status = Status.Road;
+
+        var startPoint = new Vector2(_mapData[rightExit, _columns - 1].gameObject.transform.position.x, _mapData[rightExit, _columns - 1].gameObject.transform.position.y + 2);
+        _gameManager.SetPlayerStartPoition(startPoint);
+    }
+
+    Transform[] GetCameraTargets()
+    {
+        var targets = new Transform[4];
+        targets[0] = _mapData[0, 0].gameObject.transform;
+        targets[1] = _mapData[0, _columns - 1].gameObject.transform;
+        targets[2] = _mapData[_rows - 1, 0].gameObject.transform;
+        targets[3] = _mapData[_rows - 1, _columns - 1].gameObject.transform;
+
+        return targets;
     }
 
     /// <summary>決められた方向のMapTipを配列から取得し値を返す </summary>
@@ -148,8 +169,8 @@ public class CreateMap : MonoBehaviour
     /// <returns>生成したMapTip</returns>
     MapTip MapTipGenerator(int r, int c)
     {
-        var tip = Instantiate(_mapTip, new Vector2(r, c), Quaternion.identity);
-        tip.transform.SetParent(_mapParent);
+        var tip = Instantiate(_mapTip, new Vector2(r * 4, c * 4), Quaternion.identity);
+        tip.transform.transform.SetParent(_mapParent);
         _mapData[r, c] = tip;
 
         return tip;

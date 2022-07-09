@@ -1,13 +1,15 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 /// <summary>
 /// ゲームを管理する
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] PlayerController _playerController = default;
+    [SerializeField] PlayerController _player = default;
     [SerializeField, Tooltip("スタート位置")] Transform _startPoint = default;
     [SerializeField, Tooltip("プレイヤーが操作する壁")] WallController _wall = default;
     [SerializeField, Tooltip("ゲーム開始ボタン")] Button _startButton = default;
@@ -15,16 +17,33 @@ public class GameManager : MonoBehaviour
     [SerializeField, Tooltip("")] TMP_Dropdown _playerFallDropdown = default;
     [SerializeField, Tooltip("ドロップダウン事の壁回転速度")] float[] _rotateSpeeds = new float[5];
     [SerializeField, Tooltip("プレイヤーの落ちる速度")] float[] _playerFallSpeeds = new float[5];
+    
+    event Action _createMap = default;
+
+    public event Action CreateMap
+    {
+        add { this._createMap += value; }
+        remove { this._createMap -= value; }
+    }
+
+    public void GameStart()
+    {
+        _player.AddForce();
+    }
 
     /// <summary>もう一度遊べるようにする </summary>
     public void Restart()
     {
-        _playerController.gameObject.SetActive(true);
-        _playerController.transform.position = _startPoint.position;
-        _wall.transform.rotation = new Quaternion(0, 0, 0, 0);
+        _createMap();
         _startButton.gameObject.SetActive(true);
-        _playerController.Rb2D.velocity = Vector3.zero;
+        _player.Rb2D.velocity = Vector3.zero;
     }
+
+    public void SetPlayerStartPoition(Vector2 startPoint)
+    {
+        _player.transform.position = startPoint;
+    }
+
 
     /// <summary>入力された値をプレイヤー速度に設定する </summary>
     public void ChangePlayerSpeed()
@@ -34,19 +53,19 @@ public class GameManager : MonoBehaviour
         switch (value)
         {
             case 0:
-                _playerController.Speed = _playerFallSpeeds[value];
+                _player.Speed = _playerFallSpeeds[value];
                 break;
             case 1:
-                _playerController.Speed = _playerFallSpeeds[value];
+                _player.Speed = _playerFallSpeeds[value];
                 break;
             case 2:
-                _playerController.Speed = _playerFallSpeeds[value];
+                _player.Speed = _playerFallSpeeds[value];
                 break;
             case 3:
-                _playerController.Speed = _playerFallSpeeds[value];
+                _player.Speed = _playerFallSpeeds[value];
                 break;
             case 4:
-                _playerController.Speed = _playerFallSpeeds[value];
+                _player.Speed = _playerFallSpeeds[value];
                 break;
         }
     }
