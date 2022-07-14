@@ -1,6 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// ステージ・壁を回転させる 
+/// プレイヤーからの入力も管理している
+/// </summary>
 public class WallController : MonoBehaviour
 {
     [SerializeField, Tooltip("回転速度")] float _rotateSpeed = 0.1f;
