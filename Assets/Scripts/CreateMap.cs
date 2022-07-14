@@ -10,7 +10,6 @@ public class CreateMap : MonoBehaviour
     [SerializeField, Tooltip("生成されたマップの親オブジェクト")] Transform _mapParent = default;
     [SerializeField, Tooltip("マップ回転の中心")] Transform _mapRotationCenter = default;
     [SerializeField, Tooltip("読み込んだマップデータを取得する")] GetCSVMapData _getCSVMapData = default;
-    [SerializeField, Tooltip("ステージ全体が映るようにする為")] CameraController _cameraController = default;
     [SerializeField] GameManager _gameManager = default;
     /// <summary>初めてマップを生成したかどうか </summary>
     bool _isFirstCreate = true;

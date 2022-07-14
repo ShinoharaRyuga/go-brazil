@@ -10,11 +10,11 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject _player = default;
     [SerializeField, Tooltip("プレイヤーが操作する壁")] WallController _wall = default;
+    [SerializeField, Tooltip("マップを上昇させる")] MapMove _mapMove = default;
     [SerializeField, Tooltip("ゲーム開始ボタン")] Button _startButton = default;
-    [SerializeField, Tooltip("壁の回転速度を変える為のドロップダウン")] TMP_Dropdown _speedDropdown = default;
+    [SerializeField, Tooltip("壁の回転速度が入力される")] TMP_InputField _rotateInputField = default;
+    [SerializeField, Tooltip("マップの移動速度が入力される")] TMP_InputField _mapMoveInputField = default;
     [SerializeField, Tooltip("")] TMP_Dropdown _playerFallDropdown = default;
-    [SerializeField, Tooltip("ドロップダウン事の壁回転速度")] float[] _rotateSpeeds = new float[5];
-
     /// <summary>ゲームをプレイ中かどうか </summary>
     bool _isGameing = false;
     /// <summary>マップ生成の関数をセットする </summary>
@@ -28,6 +28,12 @@ public class GameManager : MonoBehaviour
     {
         add { this._createMap += value; }
         remove { this._createMap -= value; }
+    }
+
+    private void Start()
+    {
+        _rotateInputField.text = _wall.RotateSpeed.ToString("F1");
+        _mapMoveInputField.text = _mapMove.MoveValue.ToString("F2");
     }
 
     public void GameStart()
@@ -48,28 +54,17 @@ public class GameManager : MonoBehaviour
         _player.transform.position = startPoint;
     }
 
-    /// <summary>壁の回転速度を変える </summary>
+    /// <summary>壁の回転速度を変更する </summary>
     public void ChangeRotateSpeed()
     {
-        var value = _speedDropdown.value;
+        var speed = float.Parse(_rotateInputField.text);
+        _wall.RotateSpeed = speed;
+    }
 
-        switch (value)
-        {
-            case 0:
-                _wall.RotateSpeed = _rotateSpeeds[value];
-                break;
-            case 1:
-                _wall.RotateSpeed = _rotateSpeeds[value];
-                break;
-            case 2:
-                _wall.RotateSpeed = _rotateSpeeds[value];
-                break;
-            case 3:
-                _wall.RotateSpeed = _rotateSpeeds[value];
-                break;
-            case 4:
-                _wall.RotateSpeed = _rotateSpeeds[value];
-                break;
-        }
+    /// <summary>マップの上昇速度を変更する </summary>
+    public void ChangeMapMoveSpeed()
+    {
+        var speed = float.Parse(_mapMoveInputField.text);
+        _mapMove.MoveValue = speed;
     }
 }
