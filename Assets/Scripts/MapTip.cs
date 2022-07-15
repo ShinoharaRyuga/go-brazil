@@ -34,8 +34,9 @@ public class MapTip : MonoBehaviour
                 _spriteRenderer.color = Color.red;
                 _boxCollider.enabled = true;
                 break;
-            case Status.Test:
-                _spriteRenderer.color = Color.blue;
+            case Status.GoalWall:
+                _spriteRenderer.color = Color.yellow;
+                _boxCollider.enabled = true;
                 break;
         }
     }
@@ -44,7 +45,8 @@ public class MapTip : MonoBehaviour
 /// <summary>tip‚Ìó‘Ô </summary>
 public enum Status
 {
-    Wall,
-    Road,
-    Test,
+    Wall = 0,
+    Road = 1,
+    /// <summary>o“üŒû‚Ì–Úˆó‚É‚È‚é•Ç </summary>
+    GoalWall = 2,
 }

@@ -139,18 +139,27 @@ public class CreateMap : MonoBehaviour
             {
                 case Direction.Up:
                     _mapData[0, index].Status = Status.Road;
+                    _mapData[0, index - 1].Status = Status.GoalWall;
+                    _mapData[0, index + 1].Status = Status.GoalWall;
                     break;
                 case Direction.Down:
                     _mapData[_rows - 1, index].Status = Status.Road;
+                    _mapData[_rows - 1, index - 1].Status = Status.GoalWall;
+                    _mapData[_rows - 1, index + 1].Status = Status.GoalWall;
                     break;
                 case Direction.Right:
                     _mapData[index, _columns - 1].Status = Status.Road;
+                    _mapData[index - 1, _columns - 1].Status = Status.GoalWall;
+                    _mapData[index + 1, _columns - 1].Status = Status.GoalWall;
                     //é©ã@ÇÃà íuÇïœçXÇ∑ÇÈ
                     var startPoint = new Vector2(_mapData[index, _columns - 1].gameObject.transform.position.x, _mapData[index, _columns - 1].gameObject.transform.position.y + 5);
                     _gameManager.SetPlayerStartPoition(startPoint);
                     break;
                 case Direction.Left:
                     _mapData[index, 0].Status = Status.Road;
+                    _mapData[index - 1, 0].Status = Status.GoalWall;
+                    _mapData[index + 1, 0].Status = Status.GoalWall;
+
                     break;
             }
         }
