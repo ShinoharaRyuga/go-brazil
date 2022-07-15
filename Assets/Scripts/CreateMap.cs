@@ -15,7 +15,7 @@ public class CreateMap : MonoBehaviour
     bool _isFirstCreate = true;
     /// <summary>生成されたマップのデータ </summary>
     MapTip[,] _mapData = default;
-  
+
     void Start()
     {
         _mapData = new MapTip[_rows, _columns];
@@ -30,21 +30,19 @@ public class CreateMap : MonoBehaviour
         {
             ResetMapData();
         }
-      
+
         for (var r = 0; r < _rows; r++)     //マップの外周を壁で固める
         {
             for (var c = 0; c < _columns; c++)
             {
                 var tip = MapTipGenerator(r, c);
-                
+
                 if (r == 0 || r == _rows - 1 || c == 0 || c == _columns - 1)
                 {
                     tip.Status = Status.Wall;
                 }
             }
         }
-
-        SetExit();
 
         for (var r = 2; r < _rows - 1; r += 2)      //壁にする位置を取得し壁にする
         {
@@ -80,6 +78,8 @@ public class CreateMap : MonoBehaviour
                 getdata.Status = Status.Wall;
             }
         }
+
+        SetExit();
 
         _mapRotationCenter.position = _gameManager.Player.transform.position;
         _mapParent.transform.SetParent(_mapRotationCenter);
@@ -122,18 +122,75 @@ public class CreateMap : MonoBehaviour
     void SetExit()
     {
         _mapParent.transform.SetParent(null);
-        var upExit = Random.Range(1, _rows);
-        var downExit = Random.Range(1, _rows);
-        var leftExit = Random.Range(1, _columns);
-        var rightExit = Random.Range(1, _columns - 1);
 
-        _mapData[0, upExit].Status = Status.Road;
-        _mapData[_rows - 1, downExit].Status = Status.Road;
-        _mapData[leftExit, 0].Status = Status.Road;
-        _mapData[rightExit, _columns - 1].Status = Status.Road;
+        for (var i = 0; i < 4; i++)    
+        {
+            var direction = (Direction)i;
+            var index = 0;
+            var result = false;
+          
+            while (!result)     //出口にしたいマス目が壁で閉じられていたら別の出口にする
+            {
+                index = Random.Range(1, _rows - 1);
+                result = CheckAroundTip(index, direction);
+            }
 
-        var startPoint = new Vector2(_mapData[rightExit, _columns - 1].gameObject.transform.position.x, _mapData[rightExit, _columns - 1].gameObject.transform.position.y + 5);
-        _gameManager.SetPlayerStartPoition(startPoint);
+            switch (direction)      //各壁に出口を作成する
+            {
+                case Direction.Up:
+                    _mapData[0, index].Status = Status.Road;
+                    break;
+                case Direction.Down:
+                    _mapData[_rows - 1, index].Status = Status.Road;
+                    break;
+                case Direction.Right:
+                    _mapData[index, _columns - 1].Status = Status.Road;
+                    //自機の位置を変更する
+                    var startPoint = new Vector2(_mapData[index, _columns - 1].gameObject.transform.position.x, _mapData[index, _columns - 1].gameObject.transform.position.y + 5);
+                    _gameManager.SetPlayerStartPoition(startPoint);
+                    break;
+                case Direction.Left:
+                    _mapData[index, 0].Status = Status.Road;
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 出口にしたいマス目が壁で閉じられているか調べる
+    /// 閉じられていたらfalseを返す
+    /// </summary>
+    bool CheckAroundTip(int targetIndex, Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                if (_mapData[1, targetIndex].Status == Status.Wall)
+                {
+                    return false;
+                }
+                return true;
+            case Direction.Down:
+                if (_mapData[_rows - 2, targetIndex].Status == Status.Wall)
+                {
+                    return false;
+                }
+                return true;
+            case Direction.Right:
+                if (_mapData[targetIndex, _columns - 2].Status == Status.Wall)
+                {
+                    return false;
+                }
+                return true;
+            case Direction.Left:
+                if (_mapData[targetIndex, 1].Status == Status.Wall)
+                {
+                    return false;
+                }
+                return true;
+            default:
+                return false;
+        }
     }
 
     /// <summary>_createModeによってマップ生成方法を変更し生成する </summary>

@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 290897036}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -427,7 +427,6 @@ MonoBehaviour:
   _startButton: {fileID: 1183080878}
   _rotateInputField: {fileID: 789759782}
   _mapMoveInputField: {fileID: 930308299}
-  _playerFallDropdown: {fileID: 0}
 --- !u!4 &290897037
 Transform:
   m_ObjectHideFlags: 0
@@ -710,9 +709,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7864215618928664605, guid: 64b29f4f180050c469fe05095fe3df2f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: db449334ea73ffa4eb11425cbc5d4956, type: 3}
     - target: {fileID: 7864215618928664606, guid: 64b29f4f180050c469fe05095fe3df2f, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7864215618928664606, guid: 64b29f4f180050c469fe05095fe3df2f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64b29f4f180050c469fe05095fe3df2f, type: 3}

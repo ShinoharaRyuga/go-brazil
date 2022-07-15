@@ -11,6 +11,7 @@ public class Obstacle : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.SetActive(false);
+            GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IsGameing = false;
         }
     }
 }

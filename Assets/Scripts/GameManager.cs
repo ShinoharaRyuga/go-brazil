@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     [SerializeField, Tooltip("ゲーム開始ボタン")] Button _startButton = default;
     [SerializeField, Tooltip("壁の回転速度が入力される")] TMP_InputField _rotateInputField = default;
     [SerializeField, Tooltip("マップの移動速度が入力される")] TMP_InputField _mapMoveInputField = default;
-    [SerializeField, Tooltip("")] TMP_Dropdown _playerFallDropdown = default;
     /// <summary>ゲームをプレイ中かどうか </summary>
     bool _isGameing = false;
     /// <summary>マップ生成の関数をセットする </summary>
@@ -46,6 +45,8 @@ public class GameManager : MonoBehaviour
     {
         _createMap();
         _startButton.gameObject.SetActive(true);
+        _player.SetActive(true);
+        _isGameing = false;
     }
 
     /// <summary>自機をスタート位置にセットする </summary>
