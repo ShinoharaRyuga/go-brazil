@@ -12,16 +12,23 @@ public class CreateMap : MonoBehaviour
     [SerializeField, Tooltip("マップ回転の中心")] Transform _mapRotationCenter = default;
     [SerializeField, Tooltip("読み込んだマップデータを取得する")] GetCSVMapData _getCSVMapData = default;
     [SerializeField] GameManager _gameManager = default;
+    [SerializeField, Header("始まりの国")] Countries _startCountry = Countries.Japan;
+    [SerializeField, Header("左出口先の国")] Countries _leftExitCountry = Countries.None;
+    [SerializeField, Header("右出口先の国")] Countries _rightExitCountry = Countries.None;
+    [SerializeField, Header("下出口先の国")] Countries _downExitCountry = Countries.None;
     /// <summary>初めてマップを生成したかどうか </summary>
     bool _isFirstCreate = true;
     /// <summary>生成されたマップのデータ </summary>
     MapTip[,] _mapData = default;
+
+    public Countries StartCountry { get => _startCountry; }
 
     void Start()
     {
         _mapData = new MapTip[_rows, _columns];
         MapCreate();
         _gameManager.CreateMap += MapCreate;
+        ResultManager.Instance.StartCountry = _startCountry;
     }
 
     /// <summary>マップをランダム生成する </summary>
@@ -124,12 +131,12 @@ public class CreateMap : MonoBehaviour
     {
         _mapParent.transform.SetParent(null);
 
-        for (var i = 0; i < 4; i++)    
+        for (var i = 0; i < 4; i++)
         {
             var direction = (Direction)i;
             var index = 0;
             var result = false;
-          
+
             while (!result)     //出口にしたいマス目が壁で閉じられていたら別の出口にする
             {
                 index = Random.Range(1, _rows - 1);
@@ -139,17 +146,23 @@ public class CreateMap : MonoBehaviour
             switch (direction)      //各壁に出口を作成する
             {
                 case Direction.Up:
-                    _mapData[0, index].Status = Status.Road;
+                    var upData = _mapData[0, index];
+                    upData.Status = Status.Goal;
+                    upData.GoalCountry = _leftExitCountry;
                     _mapData[0, index - 1].Status = Status.GoalWall;
                     _mapData[0, index + 1].Status = Status.GoalWall;
                     break;
                 case Direction.Down:
-                    _mapData[_rows - 1, index].Status = Status.Road;
+                    var downdata = _mapData[_rows - 1, index];
+                    downdata.Status = Status.Goal;
+                    downdata.GoalCountry = _rightExitCountry;
                     _mapData[_rows - 1, index - 1].Status = Status.GoalWall;
                     _mapData[_rows - 1, index + 1].Status = Status.GoalWall;
                     break;
                 case Direction.Right:
-                    _mapData[index, _columns - 1].Status = Status.Road;
+                    var rightData = _mapData[index, _columns - 1];
+                    rightData.Status = Status.Start;
+                    rightData.GoalCountry = _startCountry;
                     _mapData[index - 1, _columns - 1].Status = Status.GoalWall;
                     _mapData[index + 1, _columns - 1].Status = Status.GoalWall;
                     //自機の位置を変更する
@@ -157,7 +170,9 @@ public class CreateMap : MonoBehaviour
                     _gameManager.SetPlayerStartPoition(startPoint);
                     break;
                 case Direction.Left:
-                    _mapData[index, 0].Status = Status.Road;
+                    var leftData = _mapData[index, 0];
+                    leftData.Status = Status.Goal;
+                    leftData.GoalCountry = _downExitCountry;
                     _mapData[index - 1, 0].Status = Status.GoalWall;
                     _mapData[index + 1, 0].Status = Status.GoalWall;
 
@@ -260,7 +275,7 @@ public class CreateMap : MonoBehaviour
     MapTip MapTipGenerator(int r, int c)
     {
         var tip = Instantiate(_mapTip, new Vector2(r * _roadWidth, c * _roadWidth), Quaternion.identity);
-        tip.transform.localScale = new Vector3 (_roadWidth, _roadWidth, 0);
+        tip.transform.localScale = new Vector3(_roadWidth, _roadWidth, 0);
         tip.transform.transform.SetParent(_mapParent);
         _mapData[r, c] = tip;
 
@@ -283,5 +298,15 @@ public enum CreateMode
     Ramdom = 0,
     /// <summary>CSVファイルなどからマップデータを読み込む </summary>
     MapData = 1,
+}
+
+public enum Countries
+{
+    None,
+    Japan,
+    Brazil,
+    India,
+    Canada,
+    Korea,
 }
 

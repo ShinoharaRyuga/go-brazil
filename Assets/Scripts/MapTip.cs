@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>マップの状態を管理するクラス </summary>
@@ -5,6 +6,8 @@ public class MapTip : MonoBehaviour
 {
     /// <summary>チップの状態 </summary>
     Status _status = Status.Road;
+    /// <summary>ゴールチップ時の国 </summary>
+    Countries _goalCountry = Countries.None;
     /// <summary>状態によって色を変更する為のレンダラー </summary>
     SpriteRenderer _spriteRenderer => GetComponent<SpriteRenderer>();
     BoxCollider2D _boxCollider => GetComponent<BoxCollider2D>();
@@ -17,6 +20,8 @@ public class MapTip : MonoBehaviour
             ChangeColor();
         }
     }
+
+    public Countries GoalCountry { get => _goalCountry; set => _goalCountry = value; }
 
     /// <summary>
     /// 状態によって色を変更
@@ -38,7 +43,47 @@ public class MapTip : MonoBehaviour
                 _spriteRenderer.color = Color.yellow;
                 _boxCollider.enabled = true;
                 break;
+            case Status.Goal:
+                _spriteRenderer.color = Color.black;
+                _boxCollider.enabled = true;
+                _boxCollider.isTrigger = true;
+                break;
+            case Status.Start:
+                _spriteRenderer.color = Color.black;
+                _boxCollider.enabled = true;
+                _boxCollider.isTrigger = true;
+                break;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.SetActive(false);
+            GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IsGameing = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && _status == Status.Start)
+        {
+            _status = Status.Goal;
+            Debug.Log("goalに変更されました");
+        }
+        else if (collision.gameObject.CompareTag("Player") && _status == Status.Goal)
+        {
+            Debug.Log($"Goal {_goalCountry}");
+            ResultManager.Instance.GoalCountry = _goalCountry;
+            StartCoroutine(WaitTime());
+        }
+    }
+
+    IEnumerator WaitTime()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneChange.TransitionScene("ResultScene");
     }
 }
 
@@ -49,4 +94,6 @@ public enum Status
     Road = 1,
     /// <summary>出入口の目印になる壁 </summary>
     GoalWall = 2,
+    Goal = 3,
+    Start = 4,
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// ゲームを管理する
 /// </summary>
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour 
 {
     [SerializeField] GameObject _player = default;
     [SerializeField, Tooltip("プレイヤーが操作する壁")] WallController _wall = default;
@@ -31,6 +31,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        SetInputFieldText();
+    }
+
+    private void SetInputFieldText()
+    {
         _rotateInputField.text = _wall.RotateSpeed.ToString("F1");
         _mapMoveInputField.text = _mapMove.MoveValue.ToString("F2");
     }
@@ -38,6 +43,11 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         _isGameing = true;
+    }
+
+    public void GameClear()
+    {
+        _isGameing = false;
     }
 
     /// <summary>もう一度遊べるようにする </summary>
