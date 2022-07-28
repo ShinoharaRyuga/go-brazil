@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     [SerializeField, Tooltip("ゲーム開始ボタン")] Button _startButton = default;
     [SerializeField, Tooltip("壁の回転速度が入力される")] TMP_InputField _rotateInputField = default;
     [SerializeField, Tooltip("マップの移動速度が入力される")] TMP_InputField _mapMoveInputField = default;
+    [SerializeField, Tooltip("最小落下速度")] float _minFallSpeed = 0f;
+    [SerializeField, Tooltip("最大落下速度")] float _maxFallSpeed = 0f;
+    [SerializeField, Tooltip("最小回転速度")] float _minRotationSpeed = 0f;
+    [SerializeField, Tooltip("最大回転速度")] float _maxRotationSpeed = 0f;
     /// <summary>ゲームをプレイ中かどうか </summary>
     bool _isGameing = false;
     /// <summary>マップ生成の関数をセットする </summary>
@@ -69,13 +73,29 @@ public class GameManager : MonoBehaviour
     public void ChangeRotateSpeed()
     {
         var speed = float.Parse(_rotateInputField.text);
-        _wall.RotateSpeed = speed;
+        if (_minRotationSpeed < speed && speed <= _maxRotationSpeed)
+        {
+            _wall.RotateSpeed = speed;
+        }
+        else
+        {
+            _rotateInputField.text = _wall.RotateSpeed.ToString("F1");
+        }
+       
     }
 
     /// <summary>マップの上昇速度を変更する </summary>
     public void ChangeMapMoveSpeed()
     {
         var speed = float.Parse(_mapMoveInputField.text);
-        _mapMove.MoveValue = speed;
+
+        if (_minFallSpeed < speed && speed <= _maxFallSpeed)
+        {
+            _mapMove.MoveValue = speed;
+        }
+        else
+        {
+            _mapMoveInputField.text = _mapMove.MoveValue.ToString("F2");
+        }
     }
 }

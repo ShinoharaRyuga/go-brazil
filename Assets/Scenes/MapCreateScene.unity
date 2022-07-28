@@ -427,6 +427,10 @@ MonoBehaviour:
   _startButton: {fileID: 1183080878}
   _rotateInputField: {fileID: 789759782}
   _mapMoveInputField: {fileID: 930308299}
+  _minFallSpeed: 0.2
+  _maxFallSpeed: 10
+  _minRotationSpeed: 10
+  _maxRotationSpeed: 0
 --- !u!4 &290897037
 Transform:
   m_ObjectHideFlags: 0
@@ -2102,7 +2106,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306308506}
-  m_LocalRotation: {x: 0.22975291, y: -0.000000018722702, z: 0.00000000441983, w: 0.973249}
+  m_LocalRotation: {x: 0.22975291, y: 0.000000018722702, z: -0.00000000441983, w: 0.973249}
   m_LocalPosition: {x: 0, y: 61.9, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2219,7 +2223,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606318522}
-  m_LocalRotation: {x: 0.22975291, y: -0.000000018722702, z: 0.00000000441983, w: 0.973249}
+  m_LocalRotation: {x: 0.22975291, y: 0.000000018722702, z: -0.00000000441983, w: 0.973249}
   m_LocalPosition: {x: 0, y: 61.9, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2291,9 +2295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _createMode: 0
-  _rows: 7
-  _columns: 7
-  _roadWidth: 5
+  _rows: 21
+  _columns: 21
+  _roadWidth: 3
   _mapTip: {fileID: 4060530708055943993, guid: 6052ef337fe49f849833a5a5a488f376, type: 3}
   _mapParent: {fileID: 2105587370}
   _mapRotationCenter: {fileID: 1194906688}
