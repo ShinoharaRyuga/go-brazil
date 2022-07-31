@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     public void ChangeRotateSpeed()
     {
         var speed = float.Parse(_rotateInputField.text);
-        if (_minRotationSpeed < speed && speed <= _maxRotationSpeed)
+        if (_minRotationSpeed <= speed && speed <= _maxRotationSpeed)
         {
             _wall.RotateSpeed = speed;
         }
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     {
         var speed = float.Parse(_mapMoveInputField.text);
 
-        if (_minFallSpeed < speed && speed <= _maxFallSpeed)
+        if (_minFallSpeed <= speed && speed <= _maxFallSpeed)
         {
             _mapMove.MoveValue = speed;
         }

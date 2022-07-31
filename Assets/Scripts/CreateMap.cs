@@ -6,7 +6,7 @@ public class CreateMap : MonoBehaviour
     [SerializeField, Tooltip("マップの生成方法")] CreateMode _createMode = CreateMode.Ramdom;
     [SerializeField, Min(7), Tooltip("縦の長さ")] int _rows = 7;
     [SerializeField, Min(7), Tooltip("横の長さ")] int _columns = 7;
-    [SerializeField, Range(3, 10), Tooltip("通路の幅")] int _roadWidth = 1;
+    [SerializeField, Range(3, 10), Tooltip("通路の幅")] float _roadWidth = 1;
     [SerializeField, Tooltip("マップを形成するオブジェクト")] MapTip _mapTip = default;
     [SerializeField, Tooltip("生成されたマップの親オブジェクト")] Transform _mapParent = default;
     [SerializeField, Tooltip("マップ回転の中心")] Transform _mapRotationCenter = default;
