@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>マップを生成する　棒倒し法を使って生成している </summary>
@@ -92,6 +93,8 @@ public class CreateMap : MonoBehaviour
         _mapRotationCenter.position = _gameManager.Player.transform.position;
         _mapParent.transform.SetParent(_mapRotationCenter);
         _isFirstCreate = false;
+
+        ChangeSprite();
     }
 
     /// <summary>CSVから取得したマップデータを使用してマップを作成する </summary>
@@ -245,6 +248,85 @@ public class CreateMap : MonoBehaviour
                     Destroy(_mapData[r, c].gameObject);
                 }
             }
+        }
+    }
+
+    /// <summary>通路に面している壁を角が丸いスプライトに変更する</summary>
+    void ChangeSprite()
+    {
+        for (var r = 1; r < _rows - 1; r++)
+        {
+            for (var c = 1; c < _columns - 1; c++)
+            {
+                var tip = _mapData[r, c];
+                ChackWall(tip, r, c);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 壁が通路に面しているかどうか調べる
+    /// 面していたらスプライトを変更するする
+    /// </summary>
+    /// <param name="target">調べる対象</param>
+    void ChackWall(MapTip target, int r, int c)
+    {
+        //targetnの周囲八マスのtipを取得する　(時計周り)
+        var up = _mapData[r + 1, c];
+        var upperRight = _mapData[r + 1, c + 1];
+        var right = _mapData[r, c + 1];
+        var bottomRight = _mapData[r - 1, c + 1];
+        var down = _mapData[r - 1, c];
+        var bottomLeft = _mapData[r - 1, c - 1];
+        var left = _mapData[r, c - 1];
+        var upperLeft = _mapData[r + 1, c - 1];
+
+        if (left.IsRoad && upperLeft.IsRoad && up.IsRoad && upperRight.IsRoad && right.IsRoad)   //コの字型　上
+        {
+            target.SpriteRenderer.color = Color.blue;
+            return;
+        }
+
+        if(up.IsRoad && upperLeft.IsRoad && left.IsRoad && bottomLeft.IsRoad && down.IsRoad)    //コの字型　左
+        {
+            target.SpriteRenderer.color = Color.blue;
+            return;
+        }
+
+        if (up.IsRoad && upperRight.IsRoad && right.IsRoad && bottomRight.IsRoad && down.IsRoad)   //コの字型　右
+        {
+            target.SpriteRenderer.color = Color.blue;
+            return;
+        }
+
+        if (left.IsRoad && bottomLeft.IsRoad && down.IsRoad && bottomRight.IsRoad && right.IsRoad)   //コの字型　下
+        {
+            target.SpriteRenderer.color = Color.blue;
+            return;
+        }
+
+        if (up.IsRoad && upperLeft.IsRoad && left.IsRoad)   //角　左上
+        {
+            target.SpriteRenderer.color = Color.green;
+            return;
+        }
+
+        if (up.IsRoad && upperRight.IsRoad && right.IsRoad)   //角　右上
+        {
+            target.SpriteRenderer.color = Color.green;
+            return;
+        }
+
+        if (left.IsRoad && bottomLeft.IsRoad && down.IsRoad)   //角　左下
+        {
+            target.SpriteRenderer.color = Color.green;
+            return;
+        }
+
+        if (right.IsRoad && bottomRight.IsRoad && down.IsRoad)  //角　右下
+        {
+            target.SpriteRenderer.color = Color.green;
+            return;
         }
     }
 

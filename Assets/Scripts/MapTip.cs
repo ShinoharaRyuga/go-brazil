@@ -8,9 +8,9 @@ public class MapTip : MonoBehaviour
     Status _status = Status.Road;
     /// <summary>ゴールチップ時の国 </summary>
     Countries _goalCountry = Countries.None;
-    /// <summary>状態によって色を変更する為のレンダラー </summary>
-    SpriteRenderer _spriteRenderer => GetComponent<SpriteRenderer>();
     BoxCollider2D _boxCollider => GetComponent<BoxCollider2D>();
+    /// <summary>状態によって色を変更する為のレンダラー </summary>
+    public SpriteRenderer SpriteRenderer => GetComponent<SpriteRenderer>();
     public Status Status 
     {
         get { return _status; }
@@ -23,6 +23,8 @@ public class MapTip : MonoBehaviour
 
     public Countries GoalCountry { get => _goalCountry; set => _goalCountry = value; }
 
+    public bool IsRoad => Status == Status.Road;
+
     /// <summary>
     /// 状態によって色を変更
     /// 当たり判定のenebledも変更する
@@ -32,24 +34,24 @@ public class MapTip : MonoBehaviour
         switch (_status)
         {
             case Status.Road:
-                _spriteRenderer.color = Color.black;
+                SpriteRenderer.color = Color.black;
                 _boxCollider.enabled = false;
                 break;
             case Status.Wall:
-                _spriteRenderer.color = Color.red;
+                SpriteRenderer.color = Color.red;
                 _boxCollider.enabled = true;
                 break;
             case Status.GoalWall:
-                _spriteRenderer.color = Color.yellow;
+                SpriteRenderer.color = Color.yellow;
                 _boxCollider.enabled = true;
                 break;
             case Status.Goal:
-                _spriteRenderer.color = Color.black;
+                SpriteRenderer.color = Color.black;
                 _boxCollider.enabled = true;
                 _boxCollider.isTrigger = true;
                 break;
             case Status.Start:
-                _spriteRenderer.color = Color.black;
+                SpriteRenderer.color = Color.black;
                 _boxCollider.enabled = true;
                 _boxCollider.isTrigger = true;
                 break;

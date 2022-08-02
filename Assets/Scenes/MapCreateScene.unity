@@ -2295,9 +2295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _createMode: 0
-  _rows: 17
-  _columns: 17
-  _roadWidth: 4.43
+  _rows: 15
+  _columns: 15
+  _roadWidth: 4
   _mapTip: {fileID: 4060530708055943993, guid: 6052ef337fe49f849833a5a5a488f376, type: 3}
   _mapParent: {fileID: 2105587370}
   _mapRotationCenter: {fileID: 1194906688}
